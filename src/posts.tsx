@@ -9,8 +9,7 @@ interface Post {
   title: string;
   body: string;
 }
-
-export const Posts = () => {
+const Posts = () => {
   const apiUrl = 'https://jsonplaceholder.typicode.com/posts';
 
   const { isLoading, isError, data, error } = useQuery({
@@ -28,15 +27,16 @@ export const Posts = () => {
   }
 
   if (isLoading) {
-    return <span>Loading...</span>;
+    return <h1>Loading...</h1>;
   }
 
-  if (error instanceof Error) {
-    return <span>Error: {error.message}</span>;
+  if (isError) {
+    return <h1>Error: {error.message}</h1>;
   }
 
   return (
     <div>
+      <h1>Use query example</h1>
       <ul>
         {data?.map((post: Post) => (
           <li key={post.title}>{post.body}</li>
@@ -45,3 +45,5 @@ export const Posts = () => {
     </div>
   );
 };
+
+export default Posts;
