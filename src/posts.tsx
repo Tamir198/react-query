@@ -1,7 +1,7 @@
 import React from 'react';
 
-import { UseQueryResult, useQuery } from '@tanstack/react-query';
-import axios, { AxiosError, AxiosResponse } from 'axios';
+import { useQuery } from '@tanstack/react-query';
+import axios from 'axios';
 
 interface Post {
   userId: number;
@@ -10,29 +10,21 @@ interface Post {
   body: string;
 }
 
-interface QueryData {
-  isLoading: boolean;
-  isError: boolean;
-  data: Post[];
-  error?: unknown;
-}
-
 export const Posts = () => {
   const apiUrl = 'https://jsonplaceholder.typicode.com/posts';
 
-  const {
-    isLoading,
-    isError,
-    data,
-    error,
-  }: UseQueryResult<AxiosResponse<AxiosError<QueryData>>> = useQuery({
+  const { isLoading, isError, data, error } = useQuery({
     queryKey: ['posts'],
     queryFn: fetchData,
   });
 
   async function fetchData(): Promise<Post[]> {
-    const posts = await axios.get(apiUrl);
-    return posts.data;
+    try {
+      const posts = await axios.get(apiUrl);
+      return posts.data;
+    } catch (error) {
+      throw error;
+    }
   }
 
   if (isLoading) {
