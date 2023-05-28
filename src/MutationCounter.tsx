@@ -5,8 +5,12 @@ const MutationCounter = () => {
   const [counter, setCounter] = useState(0);
 
   const incrementCounter = async () => {
-    await new Promise((resolve) => setTimeout(resolve, 1000));
-    setCounter((prevCounter) => prevCounter + 5);
+    try {
+      await new Promise((resolve) => setTimeout(resolve, 1000));
+      setCounter((prevCounter) => prevCounter + 5);
+    } catch (error) {
+      throw new Error(error);
+    }
   };
 
   const { mutate, isLoading, isError, isSuccess, error } =
